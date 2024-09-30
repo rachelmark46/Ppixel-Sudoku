@@ -5,13 +5,13 @@ import '../main.dart';
 import '../styles.dart';
 
 class AlertAbout extends StatelessWidget {
-  static const String authorURL = "https://www.github.com/VarunS2002/";
+  static const String authorURL = "https://github.com/sylus2207/rachel-Sudoku";
   static const String releasesURL =
-      "https://github.com/VarunS2002/Flutter-Sudoku/releases/";
+      "https://github.com/sylus2207/rachel-Sudoku/releases/";
   static const String sourceURL =
-      "https://github.com/VarunS2002/Flutter-Sudoku/";
+      "https://github.com/sylus2207/rachel-Sudoku";
   static const String licenseURL =
-      "https://github.com/VarunS2002/Flutter-Sudoku/blob/master/LICENSE";
+      "https://github.com/sylus2207/rachel-Sudoku/blob/master/LICENSE";
 
   const AlertAbout({Key? key}) : super(key: key);
 
@@ -116,7 +116,7 @@ class AlertAbout extends StatelessWidget {
               InkWell(
                 onTap: () => openURL(authorURL),
                 child: Text(
-                  'VarunS2002',
+                  'Rachel Mark',
                   style: TextStyle(
                       color: Styles.primaryColor,
                       fontFamily: 'roboto',
