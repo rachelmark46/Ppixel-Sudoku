@@ -2,7 +2,7 @@
           package="com.rachelmark.sudoku">
 
     <application
-            android:label="Sudoku"
+            android:label="sudoku"
             android:name="${applicationName}"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"

@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'package:flutter_donation_buttons/donationButtons/githubSponsorButton.dart';
 import 'package:flutter_donation_buttons/flutter_donation_buttons.dart';
 
 import 'alerts/all.dart';
@@ -25,7 +25,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   static const String versionNumber = '2.4.1';
 
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -62,6 +62,10 @@ class HomePageState extends State<HomePage> {
   static String? currentDifficultyLevel;
   static String? currentTheme;
   static String? currentAccentColor;
+
+  openURL(String url) async {
+    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  }
 
 
   static String platform = () {
@@ -94,9 +98,9 @@ class HomePageState extends State<HomePage> {
       if (currentTheme == null) {
         if (MediaQuery.maybeOf(context)?.platformBrightness != null) {
           currentTheme =
-          MediaQuery.of(context).platformBrightness == Brightness.light
-              ? 'light'
-              : 'dark';
+              MediaQuery.of(context).platformBrightness == Brightness.light
+                  ? 'light'
+                  : 'dark';
         } else {
           currentTheme = 'dark';
         }
@@ -268,7 +272,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       game = copyGrid(gameSolved);
       isButtonDisabled =
-      !isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
+          !isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
       gameOver = true;
     });
   }
@@ -281,7 +285,7 @@ class HomePageState extends State<HomePage> {
       setState(() {
         setGame(2, difficulty);
         isButtonDisabled =
-        isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
+            isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
         gameOver = false;
         isFABDisabled = !isFABDisabled;
       });
@@ -292,7 +296,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       game = copyGrid(gameCopy);
       isButtonDisabled =
-      isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
+          isButtonDisabled ? !isButtonDisabled : isButtonDisabled;
       gameOver = false;
     });
   }
@@ -314,38 +318,38 @@ class HomePageState extends State<HomePage> {
           onPressed: isButtonDisabled || gameCopy[k][i] != 0
               ? null
               : () {
-            showAnimatedDialog<void>(
-                animationType: DialogTransitionType.fade,
-                barrierDismissible: true,
-                duration: const Duration(milliseconds: 300),
-                context: context,
-                builder: (_) => const AlertNumbersState())
-                .whenComplete(() {
-              callback([k, i], AlertNumbersState.number);
-              AlertNumbersState.number = null;
-            });
-          },
+                  showAnimatedDialog<void>(
+                          animationType: DialogTransitionType.fade,
+                          barrierDismissible: true,
+                          duration: const Duration(milliseconds: 300),
+                          context: context,
+                          builder: (_) => const AlertNumbersState())
+                      .whenComplete(() {
+                    callback([k, i], AlertNumbersState.number);
+                    AlertNumbersState.number = null;
+                  });
+                },
           onLongPress: isButtonDisabled || gameCopy[k][i] != 0
               ? null
               : () => callback([k, i], 0),
           style: ButtonStyle(
             backgroundColor:
-            MaterialStateProperty.all<Color>(buttonColor(k, i)),
+                MaterialStateProperty.all<Color>(buttonColor(k, i)),
             foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.disabled)) {
-                    return gameCopy[k][i] == 0
-                        ? emptyColor(gameOver)
-                        : Styles.foregroundColor;
-                  }
-                  return game[k][i] == 0
-                      ? buttonColor(k, i)
-                      : Styles.secondaryColor;
-                }),
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return gameCopy[k][i] == 0
+                    ? emptyColor(gameOver)
+                    : Styles.foregroundColor;
+              }
+              return game[k][i] == 0
+                  ? buttonColor(k, i)
+                  : Styles.secondaryColor;
+            }),
             shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: buttonEdgeRadius(k, i),
-                )),
+              borderRadius: buttonEdgeRadius(k, i),
+            )),
             side: MaterialStateProperty.all<BorderSide>(BorderSide(
               color: Styles.foregroundColor,
               width: 1,
@@ -405,7 +409,7 @@ class HomePageState extends State<HomePage> {
         ),
         builder: (context) {
           final TextStyle customStyle =
-          TextStyle(inherit: false, color: Styles.foregroundColor);
+              TextStyle(inherit: false, color: Styles.foregroundColor);
           return Wrap(
             children: [
               ListTile(
@@ -422,7 +426,7 @@ class HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.pop(context);
                   Timer(const Duration(milliseconds: 200),
-                          () => newGame(currentDifficultyLevel!));
+                      () => newGame(currentDifficultyLevel!));
                 },
               ),
               ListTile(
@@ -437,30 +441,30 @@ class HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading:
-                Icon(Icons.build_outlined, color: Styles.foregroundColor),
+                    Icon(Icons.build_outlined, color: Styles.foregroundColor),
                 title: Text('Set Difficulty', style: customStyle),
                 onTap: () {
                   Navigator.pop(context);
                   Timer(
                       const Duration(milliseconds: 300),
-                          () => showAnimatedDialog<void>(
-                          animationType: DialogTransitionType.fadeScale,
-                          barrierDismissible: true,
-                          duration: const Duration(milliseconds: 350),
-                          context: outerContext,
-                          builder: (_) => AlertDifficultyState(
-                              currentDifficultyLevel!)).whenComplete(() {
-                        if (AlertDifficultyState.difficulty != null) {
-                          Timer(const Duration(milliseconds: 300), () {
-                            newGame(
-                                AlertDifficultyState.difficulty ?? 'test');
-                            currentDifficultyLevel =
-                                AlertDifficultyState.difficulty;
-                            AlertDifficultyState.difficulty = null;
-                            setPrefs('currentDifficultyLevel');
-                          });
-                        }
-                      }));
+                      () => showAnimatedDialog<void>(
+                              animationType: DialogTransitionType.fadeScale,
+                              barrierDismissible: true,
+                              duration: const Duration(milliseconds: 350),
+                              context: outerContext,
+                              builder: (_) => AlertDifficultyState(
+                                  currentDifficultyLevel!)).whenComplete(() {
+                            if (AlertDifficultyState.difficulty != null) {
+                              Timer(const Duration(milliseconds: 300), () {
+                                newGame(
+                                    AlertDifficultyState.difficulty ?? 'test');
+                                currentDifficultyLevel =
+                                    AlertDifficultyState.difficulty;
+                                AlertDifficultyState.difficulty = null;
+                                setPrefs('currentDifficultyLevel');
+                              });
+                            }
+                          }));
                 },
               ),
               ListTile(
@@ -482,24 +486,24 @@ class HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   Timer(
                       const Duration(milliseconds: 200),
-                          () => showAnimatedDialog<void>(
-                          animationType: DialogTransitionType.fadeScale,
-                          barrierDismissible: true,
-                          duration: const Duration(milliseconds: 350),
-                          context: outerContext,
-                          builder: (_) => AlertAccentColorsState(
-                              currentAccentColor!)).whenComplete(() {
-                        if (AlertAccentColorsState.accentColor != null) {
-                          Timer(const Duration(milliseconds: 300), () {
-                            currentAccentColor =
-                                AlertAccentColorsState.accentColor;
-                            changeAccentColor(
-                                currentAccentColor.toString());
-                            AlertAccentColorsState.accentColor = null;
-                            setPrefs('currentAccentColor');
-                          });
-                        }
-                      }));
+                      () => showAnimatedDialog<void>(
+                              animationType: DialogTransitionType.fadeScale,
+                              barrierDismissible: true,
+                              duration: const Duration(milliseconds: 350),
+                              context: outerContext,
+                              builder: (_) => AlertAccentColorsState(
+                                  currentAccentColor!)).whenComplete(() {
+                            if (AlertAccentColorsState.accentColor != null) {
+                              Timer(const Duration(milliseconds: 300), () {
+                                currentAccentColor =
+                                    AlertAccentColorsState.accentColor;
+                                changeAccentColor(
+                                    currentAccentColor.toString());
+                                AlertAccentColorsState.accentColor = null;
+                                setPrefs('currentAccentColor');
+                              });
+                            }
+                          }));
                 },
               ),
               ListTile(
@@ -510,7 +514,7 @@ class HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   Timer(
                       const Duration(milliseconds: 200),
-                          () => showAnimatedDialog<void>(
+                      () => showAnimatedDialog<void>(
                           animationType: DialogTransitionType.fadeScale,
                           barrierDismissible: true,
                           duration: const Duration(milliseconds: 350),
@@ -545,46 +549,46 @@ class HomePageState extends State<HomePage> {
                 preferredSize: const Size.fromHeight(56.0),
                 child: isDesktop
                     ? MoveWindow(
-                  onDoubleTap: () => appWindow.maximizeOrRestore(),
-                  child: AppBar(
-                    centerTitle: true,
-                    title: const Text('Sudoku'),
-                    backgroundColor: Styles.primaryColor,
-                    actions: [
-                      IconButton(
-                        icon: const Icon(Icons.minimize_outlined),
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 15),
-                        onPressed: () {
-                          appWindow.minimize();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close_rounded),
-                        padding: const EdgeInsets.fromLTRB(8, 8, 20, 8),
-                        onPressed: () {
-                          showAnimatedDialog<void>(
-                              animationType:
-                              DialogTransitionType.fadeScale,
-                              barrierDismissible: true,
-                              duration: const Duration(milliseconds: 350),
-                              context: context,
-                              builder: (_) => const AlertExit());
-                        },
-                      ),
-                    ],
-                  ),
-                )
+                        onDoubleTap: () => appWindow.maximizeOrRestore(),
+                        child: AppBar(
+                          centerTitle: true,
+                          title: const Text('Sudoku'),
+                          backgroundColor: Styles.primaryColor,
+                          actions: [
+                            IconButton(
+                              icon: const Icon(Icons.minimize_outlined),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 15),
+                              onPressed: () {
+                                appWindow.minimize();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.close_rounded),
+                              padding: const EdgeInsets.fromLTRB(8, 8, 20, 8),
+                              onPressed: () {
+                                showAnimatedDialog<void>(
+                                    animationType:
+                                        DialogTransitionType.fadeScale,
+                                    barrierDismissible: true,
+                                    duration: const Duration(milliseconds: 350),
+                                    context: context,
+                                    builder: (_) => const AlertExit());
+                              },
+                            ),
+                          ],
+                        ),
+                      )
                     : AppBar(
-                  centerTitle: true,
-                  title: const Text('Sudoku'),
-                  backgroundColor: Styles.primaryColor,
-                )),
+                        centerTitle: true,
+                        title: const Text('Sudoku'),
+                        backgroundColor: Styles.primaryColor,
+                      )),
             body: Builder(builder: (builder) {
               return Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[ /*KofiButton(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[ /*KofiButton(
                     kofiName: "flajt",
                     kofiColor: KofiColor.Red,
                     onDonation: () {
@@ -597,21 +601,82 @@ class HomePageState extends State<HomePage> {
                         patreonName:
                         "buttonshy"), // Just someone I stumbled across on Patreon as an example, not affiliated with him
                    */ const BuyMeACoffeeButton(
-                        buyMeACoffeeName: "rachelmark",
-                        color: BuyMeACoffeeColor.Green,
-                        //Allows custom styling
+                    text: "Support Us!",
+                    buyMeACoffeeName: "rachelmark",
+                    color: BuyMeACoffeeColor.Green,
+                    //Allows custom styling
 
 
-                      ),const SizedBox(width: 10,height: 10,),Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: createRows(),
-                          )],
-                      )]));
+                  ),const SizedBox(width: 10,height: 10,),Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: createRows(),
+                ),],
+
+              ), const SizedBox(height: 40),Row(
+
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [InkWell(
+                        onTap: () => openURL("https://www.ppixel.org/"),
+                        //child: const Text("About Us"),
+                        child: Container(
+                          height:20,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.yellowAccent,
+                            ),
+                            color: Colors.greenAccent,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: const Text('Website',
+                              selectionColor: Colors.black,
+                              style: TextStyle(fontWeight: FontWeight.bold,decoration: TextDecoration.underline)),
+                        ),
+                      ),
+                        const SizedBox(width: 10),
+                        InkWell(
+                          onTap: () => openURL("https://play.google.com/store/apps/developer?id=Puzzle+Pixel+Studio"),
+                          //child: const Text("About Us"),
+                          child: Container(
+                            height:20,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.yellowAccent,
+                              ),
+                              color: Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: const Text('Other Apps',selectionColor: Colors.black,
+                                style: TextStyle(fontWeight: FontWeight.bold,decoration: TextDecoration.underline)),
+                          ),
+                        ),const SizedBox(width: 10),
+                        InkWell(
+                          onTap: () => openURL("https://www.ppixel.org/digital-ai-products"),
+                          //child: const Text("About Us"),
+                          child: Container(
+                            height:20,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.greenAccent,
+                              ),
+                              color: Colors.greenAccent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: const Text('Others',selectionColor: Colors.black,
+                                style: TextStyle(fontWeight: FontWeight.bold,decoration: TextDecoration.underline)),
+                          ),
+                        ),
+                      ]),]));
             }),
             floatingActionButton: FloatingActionButton(
               foregroundColor: Styles.primaryBackgroundColor,
@@ -619,7 +684,7 @@ class HomePageState extends State<HomePage> {
                   ? Styles.primaryColor[900]
                   : Styles.primaryColor,
               onPressed:
-              isFABDisabled ? null : () => showOptionModalSheet(context),
+                  isFABDisabled ? null : () => showOptionModalSheet(context),
               child: const Icon(Icons.menu_rounded),
             )));
   }

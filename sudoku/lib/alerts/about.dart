@@ -5,15 +5,15 @@ import '../main.dart';
 import '../styles.dart';
 
 class AlertAbout extends StatelessWidget {
-  static const String authorURL = "https://github.com/sylus2207/rachel-Sudoku";
+  static const String authorURL = "https://www.ppixel.org";
   static const String releasesURL =
-      "https://github.com/sylus2207/rachel-Sudoku/releases/";
+      "https://github.com/rachelmark46/sudoku/releases/";
   static const String sourceURL =
-      "https://github.com/sylus2207/rachel-Sudoku";
+      "https://github.com/rachelmark46/sudoku/releases";
   static const String licenseURL =
-      "https://github.com/sylus2207/rachel-Sudoku/blob/master/LICENSE";
+      "https://github.com/rachelmark46/sudoku/blob/releaseV1.0.0/LICENSE";
 
-  const AlertAbout({Key? key}) : super(key: key);
+  const AlertAbout({super.key});
 
   openURL(String url) async {
     await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
@@ -38,10 +38,10 @@ class AlertAbout extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/icon/icon_round.png',
-                  height: 48.0, width: 48.0, fit: BoxFit.contain),
+             // Image.asset('assets/icon/icon_round.png',
+               //   height: 48.0, width: 48.0, fit: BoxFit.contain),
               Text(
-                '   Sudoku',
+                'www.ppixel.org',
                 style: TextStyle(
                     color: Styles.foregroundColor,
                     fontFamily: 'roboto',
@@ -107,7 +107,7 @@ class AlertAbout extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Author: ',
+                'Website: ',
                 style: TextStyle(
                     color: Styles.foregroundColor,
                     fontFamily: 'roboto',
@@ -116,7 +116,7 @@ class AlertAbout extends StatelessWidget {
               InkWell(
                 onTap: () => openURL(authorURL),
                 child: Text(
-                  'Rachel Mark',
+                  'Puzzle Pixel Studio',
                   style: TextStyle(
                       color: Styles.primaryColor,
                       fontFamily: 'roboto',
